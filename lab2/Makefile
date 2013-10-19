@@ -2,7 +2,7 @@ all:
 
 Discrete:
 	javac Discrete.java
-	java Discrete
+	java -ea Discrete
 	cat discrete.out
 Continuous:
 	javac Continuous.java
