@@ -1,5 +1,8 @@
 all:
 
+Minimization:
+	javac Minimization.java
+	java Minimization
 Discrete:
 	javac Discrete.java
 	java -ea Discrete
