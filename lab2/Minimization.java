@@ -63,7 +63,7 @@ public class Minimization {
             }
         }
         double c = (a + b) / 2;
-        return new Pair(c, query(dimension, c));
+        return new Pair(query(dimension, c), c);
     }
 
     public void solve() throws IOException {
