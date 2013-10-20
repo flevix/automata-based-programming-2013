@@ -49,8 +49,8 @@ public class Minimization {
         return coordMinF;
     }
 
-    double ternarySearch(double left, double right) {
-        return 0.0;
+    Pair ternarySearch(double left, double right) {
+        return new Pair(0.0, 0.0);
     }
 
     public void solve() throws IOException {
