@@ -40,7 +40,7 @@ public class Minimization {
         for (int i = 0; i < SEGMENTS; i++) {
             double left = 1D / SEGMENTS * i;
             double right = 1D / SEGMENTS * (i + 1);
-            Pair p = ternarySearch(left, right);
+            Pair p = ternarySearch(dimension, left, right);
             if (Double.compare(minF, p.value) == 1) {
                 minF = p.value;
                 coordMinF = p.coordinate;
@@ -49,8 +49,21 @@ public class Minimization {
         return coordMinF;
     }
 
-    Pair ternarySearch(double left, double right) {
-        return new Pair(0.0, 0.0);
+    Pair ternarySearch(int dimension, double left, double right) {
+        double a = 0.0, b = 0.0;
+        for (int i = 0; i < ITERATIONS; i++) {
+            a = (left * 2 + right) / 3;
+            b = (left + right * 2) / 3;
+            double fa = query(dimension, a);
+            double fb = query(dimension, b);
+            if (Double.compare(fa, fb) == -1) {
+                right = b;
+            } else {
+                left = a;
+            }
+        }
+        double c = (a + b) / 2;
+        return new Pair(c, query(dimension, c));
     }
 
     public void solve() throws IOException {
