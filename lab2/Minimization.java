@@ -21,7 +21,7 @@ public class Minimization {
     PrintWriter out;
 
     final static int REQUESTS = 998;
-    final static int SEGMENTS = 40;
+    final static int SEGMENTS = 20;
     final static int ITERATIONS = REQUESTS / (SEGMENTS * 2);
     int n;
 
@@ -77,7 +77,7 @@ public class Minimization {
         }
         out.println(points[n - 1]);
         out.flush();
-        out.println(in.nextDouble());
+        out.println("minimum " + in.nextDouble());
         out.flush();
     }
 
