@@ -6,13 +6,23 @@ import java.io.*;
  * User: flevix
 */
 
+class Pair {
+    double value;
+    double coordinate;
+
+    Pair(double value, double coordinate) {
+        this.value = value;
+        this.coordinate = coordinate;
+    }
+}
+
 public class Minimization {
     FastScanner in;
     PrintWriter out;
 
     final static int REQUESTS = 998;
     final static int SEGMENTS = 40;
-    final static int ITERATIONS = REQUESTS / SEGMENTS;
+    final static int ITERATIONS = REQUESTS / (SEGMENTS * 2);
     int n;
 
     double query(int dimension, double coordinate) {
@@ -24,8 +34,22 @@ public class Minimization {
         return in.nextDouble();
     }
 
-    double ternarySearch() {
-        query(0,1.0);
+    double findCoordMinF(int dimension) {
+        double minF = Double.MAX_VALUE;
+        double coordMinF = -1.0;
+        for (int i = 0; i < SEGMENTS; i++) {
+            double left = 1D / SEGMENTS * i;
+            double right = 1D / SEGMENTS * (i + 1);
+            Pair p = ternarySearch(left, right);
+            if (Double.compare(minF, p.value) == 1) {
+                minF = p.value;
+                coordMinF = p.coordinate;
+            }
+        }
+        return coordMinF;
+    }
+
+    double ternarySearch(double left, double right) {
         return 0.0;
     }
 
@@ -33,7 +57,7 @@ public class Minimization {
         n = in.nextInt();
         double[] points = new double[n];
         for (int i = 0; i < n; i++) {
-            points[i] = ternarySearch();
+            points[i] = findCoordMinF(i);
         }
         for (int i = 0; i < n - 1; i++) {
             out.print(points[i] + " ");
