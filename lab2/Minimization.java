@@ -13,13 +13,24 @@ public class Minimization {
     final static int REQUESTS = 998;
     final static int SEGMENTS = 40;
     final static int ITERATIONS = REQUESTS / SEGMENTS;
+    int n;
+
+    double query(int dimension, double coordinate) {
+        for (int i = 0; i < n; i++) {
+            out.print(i != dimension ? "0.0 " : coordinate + " ");
+        }
+        out.println();
+        out.flush();
+        return in.nextDouble();
+    }
 
     double ternarySearch() {
+        query(0,1.0);
         return 0.0;
     }
 
     public void solve() throws IOException {
-        int n = in.nextInt();
+        n = in.nextInt();
         double[] points = new double[n];
         for (int i = 0; i < n; i++) {
             points[i] = ternarySearch();
