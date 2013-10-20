@@ -10,7 +10,27 @@ public class Minimization {
     FastScanner in;
     PrintWriter out;
 
+    final static int REQUESTS = 998;
+    final static int SEGMENTS = 40;
+    final static int ITERATIONS = REQUESTS / SEGMENTS;
+
+    double ternarySearch() {
+        return 0.0;
+    }
+
     public void solve() throws IOException {
+        int n = in.nextInt();
+        double[] points = new double[n];
+        for (int i = 0; i < n; i++) {
+            points[i] = ternarySearch();
+        }
+        for (int i = 0; i < n - 1; i++) {
+            out.print(points[i] + " ");
+        }
+        out.println(points[n - 1]);
+        out.flush();
+        out.println(in.nextDouble());
+        out.flush();
     }
 
     public void run() {
@@ -35,11 +55,7 @@ public class Minimization {
         StringTokenizer st;
 
         FastScanner() {
-            try {
-                br = new BufferedReader(new InputStreamReader(System.in));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            br = new BufferedReader(new InputStreamReader(System.in));
         }
 
         FastScanner(File f) {
@@ -63,6 +79,10 @@ public class Minimization {
 
         int nextInt() {
             return Integer.parseInt(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
         }
     }
 }
