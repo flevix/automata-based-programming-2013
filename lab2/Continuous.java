@@ -11,6 +11,26 @@ public class Continuous {
     PrintWriter out;
 
     public void solve() throws IOException {
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int[] zero = new int[n];
+        int[] one = new int[n];
+        for (int i = 0; i < n; i++) {
+            zero[i] = in.nextInt() - 1;
+            one[i] = in.nextInt() - 1;
+        }
+        for (int i = 0; i < m; i++) {
+            int currState = 0;
+            int length = in.nextInt();
+            char[] currIn = in.next().toCharArray();
+            for (int j = 0; j < length; j++) {
+                double currOut = in.nextDouble();
+
+                currState = (currIn[j] == '0') ? zero[currState]
+                                                : one[currState];
+            }
+        }
+
     }
 
     public void run() {
@@ -55,6 +75,10 @@ public class Continuous {
 
         int nextInt() {
             return Integer.parseInt(next());
+        }
+
+        double nextDouble() {
+            return Double.parseDouble(next());
         }
     }
 }
