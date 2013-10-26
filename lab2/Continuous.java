@@ -10,8 +10,34 @@ public class Continuous {
     FastScanner in;
     PrintWriter out;
 
-    double[] gauss(double[][] mtx, double[] ans) {
-        return new double[1];
+    double[] gauss(double[][] mtr, double[] ans) {
+        int n = ans.length;
+        int m = mtr[0].length;
+        for (int i = 0; i < m; i++) {
+            int nextNonZero = i;
+            for (int j = i; j < n; j++) {
+                if (Double.compare(mtr[j][i], 0) != 0) {
+                    nextNonZero = j;
+                    break;
+                }
+            }
+            {
+                double[] tmp = mtr[i];
+                mtr[i] = mtr[nextNonZero];
+                mtr[nextNonZero] = tmp;
+                double t = ans[i];
+                ans[i] = ans[nextNonZero];
+                ans[nextNonZero] = t;
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            if (Double.compare(mtr[i][i], 0) == 0) {
+                ans[i] = 0;
+            } else {
+                ans[i] /= mtr[i][i];
+            }
+        }
+        return ans;
     }
 
     public void solve() throws IOException {
