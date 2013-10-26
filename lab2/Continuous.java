@@ -29,6 +29,22 @@ public class Continuous {
                 ans[i] = ans[nextNonZero];
                 ans[nextNonZero] = t;
             }
+            if (Double.compare(mtr[i][i], 0) == 0) {
+                continue;
+            }
+            for (int j = 0; j < m; j++) {
+                if (i == j) continue;
+                for (int k = 0; k < n; k++) {
+                    if (i == k) continue;
+                    mtr[k][j] -= mtr[k][i] / mtr[i][i] * mtr[i][j];
+                }
+            }
+            for (int j = 0; j < n; j++) {
+                if (i != j) ans[j] -= mtr[j][i] / mtr[i][i] * ans[i];
+            }
+            for (int j = 0; j < n; j++) {
+                if (i != j) mtr[j][i] = 0;
+            }
         }
         for (int i = 0; i < m; i++) {
             if (Double.compare(mtr[i][i], 0) == 0) {
