@@ -1,0 +1,12 @@
+@This is sample test, length = 7
+GATC
++Output read length = 4
+gfed
+@This is sample test, length = 7
+GATC
++Output read length = 4
+gfed
+@This is sample test, length = 7
+GATCGCG
++Output read length = 4
+qqqqqqq
