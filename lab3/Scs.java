@@ -9,6 +9,33 @@ import java.util.Arrays;
 
 public class Scs {
 
+    private class MinMaxPair {
+        private int min;
+        private int max;
+        
+        MinMaxPair(final int min, final int max) {
+            setValues(min, max);
+        }
+
+        public void setValues(final int min, final int max) {
+            this.min = min;
+            this.max = max;
+        }
+        
+        public int getMin() {
+            return min;
+        }
+
+        public int getMax() {
+            return max;
+        }
+
+        @Override
+        public String toString() {
+            return min + " " + max;
+        }
+    }
+
     private Set<String> getInputSet(final FastScanner in) {
         Set<String> strings = new HashSet<>();
         int n = in.nextInt();
@@ -46,6 +73,42 @@ public class Scs {
         return overlaps;
     }
 
+    private int[][] getDpArray(final int n, final int[][] overlaps) {
+        final int maxMask = 1 << n;
+        int[][] dp = new int[maxMask][n];
+        for (int[] d : dp) {
+            Arrays.fill(d, Integer.MIN_VALUE);
+        }
+        Arrays.fill(dp[0], 0);
+        for (int mask = 1; mask < maxMask; mask++) {
+            for (int k = 0; k < n; k++) {
+                if ((mask & (1 << k)) != 0) {
+                    continue;
+                }
+                for (int i = 0; i < n; i++) {
+                    if ((mask ^ (1 << i)) <= mask) {
+                        dp[mask][k] = Math.max(
+                                        dp[mask][k],
+                                        overlaps[k][i] + dp[mask ^ (1 << i)][i]);
+                    }
+                }
+            }
+        }
+        return dp;
+    }
+
+    private MinMaxPair getMinMaxValues(final int n, final int[][] dp) {
+        int mask = (1 << n) - 1;
+        MinMaxPair p = new MinMaxPair(0, dp[mask - 1][0]);
+        for (int i = 1; i < n; i++) {
+            int value = dp[mask - (1 << i)][i];
+            if (value > p.getMax()) {
+                p.setValues(i, value);
+            }
+        }
+        return p;
+    }
+
     private void solve(final FastScanner in, final PrintWriter out) {
         List<String> list = getUniqueList(getInputSet(in));
         System.out.println(Arrays.toString(list.toArray()));//-
@@ -53,6 +116,11 @@ public class Scs {
         int[][] overlaps = getOverlaps(n, list);
         for (int[] a : overlaps)//-
             System.out.println(Arrays.toString(a));//-
+        int[][] dp = getDpArray(n, overlaps);
+        for (int[] d : dp)//-
+            System.out.println(Arrays.toString(d));//-
+        MinMaxPair minMax = getMinMaxValues(n, dp);
+        System.out.println(minMax);//-
     }
     
     private static int overlap(final String s1, final String s2) {
