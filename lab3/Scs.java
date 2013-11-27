@@ -9,30 +9,30 @@ import java.util.Arrays;
 
 public class Scs {
 
-    private class MinMaxPair {
-        private int min;
-        private int max;
+    private class IndexValuePair {
+        private int index;
+        private int value;
         
-        MinMaxPair(final int min, final int max) {
-            setValues(min, max);
+        IndexValuePair(final int index, final int value) {
+            setValues(index, value);
         }
 
-        public void setValues(final int min, final int max) {
-            this.min = min;
-            this.max = max;
+        public void setValues(final int index, final int value) {
+            this.index = index;
+            this.value = value;
         }
         
-        public int getMin() {
-            return min;
+        public int getIndex() {
+            return index;
         }
 
-        public int getMax() {
-            return max;
+        public int getValue() {
+            return value;
         }
 
         @Override
         public String toString() {
-            return min + " " + max;
+            return index + " " + value;
         }
     }
 
@@ -97,30 +97,50 @@ public class Scs {
         return dp;
     }
 
-    private MinMaxPair getMinMaxValues(final int n, final int[][] dp) {
+    private IndexValuePair getIndexValue(final int n, final int[][] dp) {
         int mask = (1 << n) - 1;
-        MinMaxPair p = new MinMaxPair(0, dp[mask - 1][0]);
+        IndexValuePair p = new IndexValuePair(0, dp[mask - 1][0]);
         for (int i = 1; i < n; i++) {
             int value = dp[mask - (1 << i)][i];
-            if (value > p.getMax()) {
+            if (value > p.getValue()) {
                 p.setValues(i, value);
             }
         }
         return p;
     }
 
+    private String getSCS(final int n, final int index, final int value,
+                            final int[][] overlaps, final int[][] dp,
+                            List<String> data) {
+        StringBuilder scs = new StringBuilder(data.get(index));
+        final int mask = (1 << n) - 1;
+        int lastIndex = index;
+        int lastValue = value;
+        int lastMask = mask - (1 << lastIndex);
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int currMask = lastMask ^ (1 << j);
+                if ((currMask <= lastMask) &&
+                        (dp[currMask][j] + overlaps[lastIndex][j] == lastValue)) {
+                    scs.append(data.get(j).substring(overlaps[lastIndex][j]));
+                    lastIndex = j;
+                    lastValue = dp[currMask][j];
+                    lastMask = currMask;
+                }
+            }
+        }
+        return scs.toString();
+    }
+
     private void solve(final FastScanner in, final PrintWriter out) {
         List<String> list = getUniqueList(getInputSet(in));
-        System.out.println(Arrays.toString(list.toArray()));//-
         final int n = list.size();
         int[][] overlaps = getOverlaps(n, list);
-        for (int[] a : overlaps)//-
-            System.out.println(Arrays.toString(a));//-
         int[][] dp = getDpArray(n, overlaps);
-        for (int[] d : dp)//-
-            System.out.println(Arrays.toString(d));//-
-        MinMaxPair minMax = getMinMaxValues(n, dp);
-        System.out.println(minMax);//-
+        IndexValuePair p = getIndexValue(n, dp);
+        String ans = getSCS(n, p.getIndex(), p.getValue(),
+                                overlaps, dp, list);
+        out.println(ans);
     }
     
     private static int overlap(final String s1, final String s2) {
